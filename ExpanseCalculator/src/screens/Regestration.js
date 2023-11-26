@@ -22,7 +22,7 @@ const Registration = () => {
       }
 
       // Make an API call to register the user
-      const response = await axios.post('http://localhost:3000/auth/register', {
+      const response = await axios.post('http://localhost:/auth/register', {
         name: formData.name,
         email: formData.email,
         password: formData.password,

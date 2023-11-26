@@ -17,11 +17,11 @@ const ExpenseListing = ({ userId }) => {
   const fetchExpenses = async () => {
     try {
       if (selectedMonth && selectedYear) {
-        const response = await axios.get(`http://localhost:3000/expenses/monthly/${userId}?year=${selectedYear}&month=${selectedMonth}`);
+        const response = await axios.get(`http://localhost:5000/expenses/monthly/${userId}?year=${selectedYear}&month=${selectedMonth}`);
         setExpenses(response.data.expenses); // Assuming expenses are returned as an array within the 'expenses' property
         setFilteredExpenses(response.data.expenses); // Similarly, update filtered expenses
       } else {
-        const response = await axios.get(`http://localhost:3000/expenses`, {
+        const response = await axios.get(`http://localhost:5000/expenses`, {
           params: { userId },
         });
         setExpenses(response.data.expenses);
@@ -47,7 +47,7 @@ const ExpenseListing = ({ userId }) => {
   const handlePDFDownload = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/expenses/pdf-download/${userId}?startDate=${selectedYear}-01-01&endDate=${selectedYear}-12-31`,
+        `http://localhost:5000/expenses/pdf-download/${userId}?startDate=${selectedYear}-01-01&endDate=${selectedYear}-12-31`,
         { responseType: 'blob' }
       );
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert } from 'react-native';
-import axios from 'axios'; // Import axios for making HTTP requests
+import axios from 'axios'; 
 
 const PasswordReset = () => {
   const [email, setEmail] = useState('');
@@ -14,18 +14,17 @@ const PasswordReset = () => {
       }
 
       // Make an API call to initiate password reset
-      const response = await axios.post('YOUR_BACKEND_PASSWORD_RESET_ENDPOINT', {
+      const response = await axios.post('http://localhost:5000/auth/reset-password', {
         email: email,
       });
 
-      // Handle successful password reset initiation
       console.log('Password reset email sent:', response.data);
       Alert.alert('Success', 'Password reset email sent successfully.');
       // You might navigate the user to a confirmation screen or perform other actions
     } catch (error) {
       console.error('Password reset error:', error.response.data);
       Alert.alert('Error', 'Failed to initiate password reset. Please try again.');
-      // Handle password reset error - show an error message to the user
+      
     }
   };
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert } from 'react-native';
-import axios from 'axios'; // Import axios for making HTTP requests
+import axios from 'axios'; 
 
 const ExpenseManagement = () => {
   const [expenseData, setExpenseData] = useState({
@@ -28,10 +28,11 @@ const ExpenseManagement = () => {
       }
 
       // Make an API call to add the expense
-      const response = await axios.post('http://localhost:3000/expenses', expenseData);
+      const response = await axios.post('http://localhost:5000/expenses', expenseData);
 
       // Handle successful expense addition
       console.log('Added Expense:', response.data);
+      
       Alert.alert('Success', 'Expense added successfully!');
       // Clear form fields after successful addition
       setExpenseData({
@@ -43,14 +44,14 @@ const ExpenseManagement = () => {
     } catch (error) {
       console.error('Add expense error:', error.response.data);
       Alert.alert('Error', 'Failed to add expense. Please try again.');
-      // Handle add expense error - show an error message to the user
+  
     }
   };
 
   const handleEditExpense = async () => {
     try {
       // Make an API call to edit the expense
-      const response = await axios.put('http://localhost:3000/expenses/:id', expenseData);
+      const response = await axios.put('http://localhost:5000/expenses/:id', expenseData);
 
       // Handle successful expense update
       console.log('Updated Expense:', response.data);
@@ -65,8 +66,8 @@ const ExpenseManagement = () => {
   const handleDeleteExpense = async () => {
     try {
       // Make an API call to delete the expense
-      const response = await axios.delete('http://localhost:3000/expenses/:id', {
-        data: expenseData, // Sending data in the request body or query params as needed
+      const response = await axios.delete('http://localhost:5000/expenses/:id', {
+        data: expenseData,
       });
 
       // Handle successful expense deletion

@@ -19,8 +19,7 @@ const Login = ({ navigation }) => {
         return;
       }
 
-      
-      const response = await axios.post('YOUR_BACKEND_LOGIN_ENDPOINT', {
+      const response = await axios.post('http://localhost:5000/auth/login', {
         email: formData.email,
         password: formData.password,
       });
