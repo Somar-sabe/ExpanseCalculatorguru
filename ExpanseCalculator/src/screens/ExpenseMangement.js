@@ -28,7 +28,7 @@ const ExpenseManagement = () => {
       }
 
       // Make an API call to add the expense
-      const response = await axios.post('YOUR_BACKEND_ADD_EXPENSE_ENDPOINT', expenseData);
+      const response = await axios.post('http://localhost:3000/expenses', expenseData);
 
       // Handle successful expense addition
       console.log('Added Expense:', response.data);
@@ -50,7 +50,7 @@ const ExpenseManagement = () => {
   const handleEditExpense = async () => {
     try {
       // Make an API call to edit the expense
-      const response = await axios.put('YOUR_BACKEND_EDIT_EXPENSE_ENDPOINT', expenseData);
+      const response = await axios.put('http://localhost:3000/expenses/:id', expenseData);
 
       // Handle successful expense update
       console.log('Updated Expense:', response.data);
@@ -65,7 +65,7 @@ const ExpenseManagement = () => {
   const handleDeleteExpense = async () => {
     try {
       // Make an API call to delete the expense
-      const response = await axios.delete('YOUR_BACKEND_DELETE_EXPENSE_ENDPOINT', {
+      const response = await axios.delete('http://localhost:3000/expenses/:id', {
         data: expenseData, // Sending data in the request body or query params as needed
       });
 

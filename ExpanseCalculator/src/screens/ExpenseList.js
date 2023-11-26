@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Picker, Button, Alert } from 'react-native';
 import axios from 'axios';
-import * as FileSystem from 'expo-file-system'; // Import FileSystem for file download
+import * as FileSystem from 'expo-file-system'; 
+import { styles } from '../css/ExpenseListingStyles';
 
 const ExpenseListing = ({ userId }) => {
   const [expenses, setExpenses] = useState([]);
@@ -16,19 +17,22 @@ const ExpenseListing = ({ userId }) => {
   const fetchExpenses = async () => {
     try {
       if (selectedMonth && selectedYear) {
-        const response = await axios.get(`/api/expenses/monthly/${userId}?year=${selectedYear}&month=${selectedMonth}`);
-        setExpenses(response.data);
-        setFilteredExpenses(response.data);
+        const response = await axios.get(`http://localhost:3000/expenses/monthly/${userId}?year=${selectedYear}&month=${selectedMonth}`);
+        setExpenses(response.data.expenses); // Assuming expenses are returned as an array within the 'expenses' property
+        setFilteredExpenses(response.data.expenses); // Similarly, update filtered expenses
       } else {
-        const response = await axios.get(`/api/expenses/user/${userId}`);
-        setExpenses(response.data);
-        setFilteredExpenses(response.data);
+        const response = await axios.get(`http://localhost:3000/expenses`, {
+          params: { userId },
+        });
+        setExpenses(response.data.expenses);
+        setFilteredExpenses(response.data.expenses);
       }
     } catch (error) {
       console.error('Fetch expenses error:', error.response.data);
-      // Handle error
+      
     }
   };
+  
 
   const handleFilter = (searchTerm) => {
     const filtered = expenses.filter(
@@ -43,7 +47,7 @@ const ExpenseListing = ({ userId }) => {
   const handlePDFDownload = async () => {
     try {
       const response = await axios.get(
-        `/api/expenses/pdf-download/${userId}?startDate=${selectedYear}-01-01&endDate=${selectedYear}-12-31`,
+        `http://localhost:3000/expenses/pdf-download/${userId}?startDate=${selectedYear}-01-01&endDate=${selectedYear}-12-31`,
         { responseType: 'blob' }
       );
 
@@ -64,41 +68,54 @@ const ExpenseListing = ({ userId }) => {
   };
 
   return (
-    <View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 }}>
-        <Picker
-          selectedValue={selectedMonth}
-          onValueChange={(itemValue) => setSelectedMonth(itemValue)}
-          style={{ width: 150 }}
-        >
-          <Picker.Item label="Select Month" value="" />
-          {/* Add Picker items for months */}
-          <Picker.Item label="January" value="1" />
-          {/* Add other months */}
-        </Picker>
+    <View style={styles.container}>
+      <View style={styles.pickerContainer}>
+      <Picker
+  selectedValue={selectedMonth}
+  onValueChange={(itemValue) => setSelectedMonth(itemValue)}
+  style={{ width: 150 }}
+>
+  <Picker.Item label="Select Month" value="" />
+  <Picker.Item label="January" value="1" />
+  <Picker.Item label="February" value="2" />
+  <Picker.Item label="March" value="3" />
+  <Picker.Item label="April" value="4" />
+  <Picker.Item label="May" value="5" />
+  <Picker.Item label="June" value="6" />
+  <Picker.Item label="July" value="7" />
+  <Picker.Item label="August" value="8" />
+  <Picker.Item label="September" value="9" />
+  <Picker.Item label="October" value="10" />
+  <Picker.Item label="November" value="11" />
+  <Picker.Item label="December" value="12" />
+</Picker>
+
         <Picker
           selectedValue={selectedYear}
           onValueChange={(itemValue) => setSelectedYear(itemValue)}
           style={{ width: 150 }}
         >
           <Picker.Item label="Select Year" value="" />
-          {/* Add Picker items for years */}
+          \
+          <Picker.Item label="2022" value="2022" />
           <Picker.Item label="2023" value="2023" />
           {/* Add other years */}
         </Picker>
       </View>
-      <Button title="Download PDF" onPress={handlePDFDownload} />
+      <TouchableOpacity style={styles.button} onPress={handlePDFDownload}>
+        <Text style={styles.buttonText}>Download PDF</Text>
+      </TouchableOpacity>
       <FlatList
         data={filteredExpenses}
         renderItem={({ item }) => (
-          <View style={{ marginBottom: 10, borderBottomWidth: 1, paddingBottom: 5 }}>
-            <Text>Description: {item.description}</Text>
-            <Text>Amount: {item.amount}</Text>
-            <Text>Category: {item.category}</Text>
-            <Text>Date: {item.date}</Text>
+          <View style={styles.expenseItem}>
+            <Text style={styles.expenseText}>Description: {item.description}</Text>
+            <Text style={styles.expenseText}>Amount: {item.amount}</Text>
+            <Text style={styles.expenseText}>Category: {item.category}</Text>
+            <Text style={styles.expenseText}>Date: {item.date}</Text>
           </View>
         )}
-        keyExtractor={(item) => item.id.toString()} // Change 'id' to your unique identifier
+        keyExtractor={(item) => item.id.toString()} 
       />
     </View>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert } from 'react-native';
-import axios from 'axios'; // Import axios for making HTTP requests
+import axios from 'axios'; 
 
 const Registration = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ const Registration = () => {
       }
 
       // Make an API call to register the user
-      const response = await axios.post('YOUR_BACKEND_REGISTER_ENDPOINT', {
+      const response = await axios.post('http://localhost:3000/auth/register', {
         name: formData.name,
         email: formData.email,
         password: formData.password,
